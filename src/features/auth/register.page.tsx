@@ -1,12 +1,13 @@
 import { Button } from "@/shared/ui/kit/button";
-import { AuthLayout } from "./auth-layout";
+import { AuthLayout } from "./ui/auth-layout";
 import { Link } from "react-router-dom";
 import { ROUTES } from "@/shared/model/routes";
+import { RegisterForm } from "./ui/register-form";
 
 function RegisterPage() {
   return (
     <AuthLayout
-      form={<form></form>}
+      form={<RegisterForm />}
       title="Регистрация"
       description={"Введите ваш email и пароль для регистрации"}
       footerText={

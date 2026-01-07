@@ -1,12 +1,13 @@
 import { Button } from "@/shared/ui/kit/button";
-import { AuthLayout } from "./auth-layout";
+import { AuthLayout } from "./ui/auth-layout";
 import { Link } from "react-router-dom";
 import { ROUTES } from "@/shared/model/routes";
+import { LoginForm } from "./ui/login-form";
 
 function LoginPage() {
   return (
     <AuthLayout
-      form={<form></form>}
+      form={<LoginForm />}
       title="Вход в систему"
       description={"Введите ваш email и пароль для входа"}
       footerText={

@@ -13,8 +13,8 @@ export function AuthLayout({
   footerText,
 }: {
   form: React.ReactNode;
-  title: React.ReactNode;
-  description: React.ReactNode;
+  title: string;
+  description: string;
   footerText: React.ReactNode;
 }) {
   return (

@@ -4,7 +4,7 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./router";
 import "./index.css";
 
-async function enableMocking() {
+export async function enableMocking() {
   if (import.meta.env.PROD) {
     return;
   }

@@ -135,7 +135,13 @@ export interface paths {
         /** Get all boards for current user */
         get: {
             parameters: {
-                query?: never;
+                query?: {
+                    page?: number;
+                    limit?: number;
+                    sort?: "createdAt" | "updatedAt" | "lastOpenedAt" | "name";
+                    isFavorite?: boolean;
+                    search?: string;
+                };
                 header?: never;
                 path?: never;
                 cookie?: never;
@@ -148,16 +154,10 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["Board"][];
+                        "application/json": components["schemas"]["BoardsList"];
                     };
                 };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
+                401: components["responses"]["UnauthorizedError"];
             };
         };
         put?: never;
@@ -169,11 +169,7 @@ export interface paths {
                 path?: never;
                 cookie?: never;
             };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["createBoard"];
-                };
-            };
+            requestBody?: never;
             responses: {
                 /** @description Board created successfully */
                 201: {
@@ -184,13 +180,7 @@ export interface paths {
                         "application/json": components["schemas"]["Board"];
                     };
                 };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
+                401: components["responses"]["UnauthorizedError"];
             };
         };
         delete?: never;
@@ -252,22 +242,96 @@ export interface paths {
                     };
                     content?: never;
                 };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
+                401: components["responses"]["UnauthorizedError"];
+                404: components["responses"]["NotFoundError"];
             };
         };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/boards/{boardId}/rename": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Rename a board */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    boardId: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["RenameBoard"];
+                };
+            };
+            responses: {
+                /** @description Board created successfully */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Board"];
+                    };
+                };
+                401: components["responses"]["UnauthorizedError"];
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/boards/{boardId}/favorite": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Update a board favorite */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    boardId: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["UpdateBoardFavorite"];
+                };
+            };
+            responses: {
+                /** @description Board created successfully */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Board"];
+                    };
+                };
+                401: components["responses"]["UnauthorizedError"];
+            };
+        };
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -305,9 +369,24 @@ export interface components {
         Board: {
             id: string;
             name: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            /** Format: date-time */
+            lastOpenedAt: string;
+            isFavorite: boolean;
         };
-        createBoard: {
+        BoardsList: {
+            list: components["schemas"]["Board"][];
+            total: number;
+            totalPages: number;
+        };
+        RenameBoard: {
             name: string;
+        };
+        UpdateBoardFavorite: {
+            isFavorite: boolean;
         };
     };
     responses: {

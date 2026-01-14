@@ -1,44 +1,47 @@
 import { ROUTES } from "@/shared/model/routes";
 import { generatePath, Link } from "react-router-dom";
-import { useActionsBoards } from "../model/use-actions-boards";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
 } from "@/shared/ui/kit/card";
-import { Switch } from "@/shared/ui/kit/switch";
 import { Button } from "@/shared/ui/kit/button";
 import { ApiSchemas } from "@/shared/api/schema";
+import { BoardsFavoriteToggle } from "./board-favorite-toggle";
 
-function formatDate(item: string) {
-  return new Date(item).toLocaleDateString();
+function formatDate(date: string) {
+  return new Date(date).toLocaleDateString();
 }
 
-export const BoardItem = ({
+export const BoardListItem = ({
   board,
   showFavorite = true,
+  isFavorite,
+  onToggleFavorite,
+  onDelete,
+  deleteDisabled,
 }: {
   board: ApiSchemas["Board"];
   showFavorite?: boolean;
+  isFavorite: boolean;
+  onToggleFavorite: () => void;
+  onDelete: () => void;
+  deleteDisabled: boolean;
 }) => {
-  const { updateFavorite, delete: deleteActions } = useActionsBoards();
-
   return (
-    <Card className="relative overflow-visible">
+    <Card className="relative">
       {showFavorite && (
-        <div className="absolute top-2 right-2 flex items-center gap-2 z-10">
-          <Switch
-            checked={updateFavorite.isOptimisticFavorite(board)}
-            onCheckedChange={() => updateFavorite.handleToggle(board)}
-          />
-        </div>
+        <BoardsFavoriteToggle
+          onToggle={onToggleFavorite}
+          isFavorite={isFavorite}
+        />
       )}
       <CardHeader>
         <div className="flex flex-col gap-2">
-          <Button asChild variant="link" className="text-left h-auto p-0">
+          <Button asChild variant="link" className="text-left justify-start h-auto p-0">
             <Link to={generatePath(ROUTES.BOARD, { boardId: board.id })}>
-              <h2 className="text-xl font-medium">{board.name}</h2>
+              <h2 className="text-xl font-medium truncate">{board.name}</h2>
             </Link>
           </Button>
         </div>
@@ -54,8 +57,8 @@ export const BoardItem = ({
       <CardFooter>
         <Button
           variant="destructive"
-          disabled={deleteActions.isPending(board.id)}
-          onClick={() => deleteActions.deleteBoard(board.id)}
+          disabled={deleteDisabled}
+          onClick={onDelete}
         >
           Удалить
         </Button>

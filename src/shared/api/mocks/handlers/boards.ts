@@ -3,7 +3,6 @@ import { http } from "../http";
 import { ApiSchemas } from "../../schema";
 import { verifyTokenOrThrow } from "../../session";
 
-// Функция для генерации случайной даты в пределах последних 30 дней
 function randomDate() {
   const start = new Date();
   start.setDate(start.getDate() - 30);
@@ -106,7 +105,7 @@ function generateRandomBoards(count: number): ApiSchemas["Board"][] {
 
   return result;
 }
-const boards: ApiSchemas["Board"][] = generateRandomBoards(1000);
+const boards: ApiSchemas["Board"][] = generateRandomBoards(25);
 
 export const boardsHandlers = [
   http.get("/boards", async (ctx) => {
@@ -135,14 +134,11 @@ export const boardsHandlers = [
         (board) => board.isFavorite === isFav,
       );
     }
-
-    // Сортировка
     if (sort) {
       filteredBoards.sort((a, b) => {
         if (sort === "name") {
           return a.name.localeCompare(b.name);
         } else {
-          // Для дат (createdAt, updatedAt, lastOpenedAt)
           return (
             new Date(
               b[sort as keyof ApiSchemas["Board"]].toString(),

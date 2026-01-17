@@ -29,7 +29,7 @@ export const BoardsList = ({ boards, viewMode }: BoardsListProps) => {
               menuActions={
               <Button
                 variant="destructive"
-                className="w-[100%]"
+                className="w-full"
                 disabled={deleteActions.isPending(board.id)}
                 onClick={() => deleteActions.deleteBoard(board.id)}
               >

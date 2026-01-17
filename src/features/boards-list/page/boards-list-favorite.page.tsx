@@ -1,4 +1,3 @@
-import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/kit/tabs";
 import { useBoardsList } from "../model/use-boards-list";
 import { useActionsBoards } from "../model/use-actions-boards";
 import {
@@ -6,18 +5,17 @@ import {
   BoardsListLayout,
   BoardsListLayoutHeader,
 } from "../ui/boards-list-layout";
-import { ViewMode, ViewModeToggle } from "../ui/view-mode-toggle";
-import { useState } from "react";
-import { BoardCreateForm } from "../ui/board-list-create-form";
+import { ViewModeToggle } from "../ui/view-mode-toggle";
 import { BoardsListCard } from "../ui/board-list-card";
 import { BoardsFavoriteToggle } from "../ui/board-favorite-toggle";
 import { Button } from "@/shared/ui/kit/button";
 import { BoardListItem } from "../ui/board-list-item";
 import { BoardsSidebar } from "../ui/board-list-sidebar";
+import { useViewMode } from "@/shared/lib/hooks";
 
 function BoardsListFavoritePage() {
-  const [viewMode, setViewMode] = useState<ViewMode>("list");
   const {updateFavorite, delete: deleteActions } = useActionsBoards();
+  const {changeViewMode, viewMode} = useViewMode()
   const {isPending, isFetchingNextPage, cursorRef, boards, hasNextPage } =
     useBoardsList({
       isFavorite: true,
@@ -33,7 +31,7 @@ function BoardsListFavoritePage() {
           actions={
              <ViewModeToggle
               value={viewMode}
-              onChange={(value) => setViewMode(value)}
+              onChange={(value) => changeViewMode(value)}
             />
           }
         />

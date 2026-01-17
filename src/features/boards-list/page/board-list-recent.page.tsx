@@ -9,8 +9,7 @@ import {
   BoardsListLayoutHeader,
   BoardsListLayoutList,
 } from "../ui/boards-list-layout";
-import { ViewMode, ViewModeToggle } from "../ui/view-mode-toggle";
-import { useState } from "react";
+import { ViewModeToggle } from "../ui/view-mode-toggle";
 import { BoardsListCard } from "../ui/board-list-card";
 import { BoardsFavoriteToggle } from "../ui/board-favorite-toggle";
 import { Button } from "@/shared/ui/kit/button";
@@ -18,9 +17,10 @@ import { BoardListItem } from "../ui/board-list-item";
 import { useRecentGroups } from "../model/use-recent-groups";
 import { ApiSchemas } from "@/shared/api/schema";
 import { BoardsSidebar } from "../ui/board-list-sidebar";
+import { useViewMode } from "@/shared/lib/hooks";
 
 function BoardsListRecentPage() {
-  const [viewMode, setViewMode] = useState<ViewMode>("list");
+  const {changeViewMode, viewMode} = useViewMode()
   const {updateFavorite, delete: deleteActions } = useActionsBoards();
   const {isPending, isFetchingNextPage, cursorRef, boards, hasNextPage} = useBoardsList({sort:'lastOpenedAt'});
   const recentsGroups = useRecentGroups(boards);
@@ -83,7 +83,7 @@ function BoardsListRecentPage() {
           actions={
              <ViewModeToggle
               value={viewMode}
-              onChange={(value) => setViewMode(value)}
+              onChange={(value) => changeViewMode(value)}
             />
           }
         />

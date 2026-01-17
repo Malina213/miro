@@ -1,4 +1,4 @@
-import React, { Children } from "react";
+import React from "react";
 import { ViewMode } from "./view-mode-toggle";
 
 export function BoardsListLayout({

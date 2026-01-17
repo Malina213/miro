@@ -6,13 +6,14 @@ import {
   DialogTitle,
 } from "@/shared/ui/kit/dialog";
 import { TemplatesGallery } from "./templates-gallery";
-import { useTemplatesModal } from "./use-templates-modal";
+import { useAppDispatch, useAppSelector } from "@/shared/lib/hooks";
+import { closeTemplatesModal } from "@/shared/model/slices/templatesModalSlice";
 
 export function TemplatesModal() {
-  const { isOpen, close } = useTemplatesModal();
-
+  const isOpen = useAppSelector(state => state.templatesModal.isOpen)
+  const dispatch = useAppDispatch()
   return (
-    <Dialog open={isOpen} onOpenChange={close}>
+    <Dialog open={isOpen} onOpenChange={() => dispatch(closeTemplatesModal())}>
       <DialogContent className="max-w-3xl">
         <DialogHeader>
           <DialogTitle>Выберите шаблон</DialogTitle>

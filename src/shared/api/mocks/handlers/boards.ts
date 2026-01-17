@@ -14,7 +14,6 @@ function randomDate() {
   ).toISOString();
 }
 
-// Функция для генерации случайного названия доски
 function generateBoardName() {
   const adjectives = [
     "Стратегический",

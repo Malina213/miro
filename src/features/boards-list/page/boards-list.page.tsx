@@ -1,7 +1,7 @@
 import { Button } from "@/shared/ui/kit/button";
 import { useBoardsList } from "../model/use-boards-list";
 import { useBoardsFilters } from "../model/use-boards-filters";
-import { useDebounceValue } from "@/shared/lib/hooks";
+import { useAppDispatch, useDebounceValue, useViewMode } from "@/shared/lib/hooks";
 import { useActionsBoards } from "../model/use-actions-boards";
 import {
   BoardListContent,
@@ -10,27 +10,28 @@ import {
   BoardsListLayoutHeader,
 } from "../ui/boards-list-layout";
 import { ViewMode, ViewModeToggle } from "../ui/view-mode-toggle";
-import { useState } from "react";
 import { BoardsSortSelect } from "../ui/board-sort-select";
 import { BoardsSearchInput } from "../ui/board-search-input";
 import { BoardsListCard } from "../ui/board-list-card";
 import { BoardListItem } from "../ui/board-list-item";
 import { BoardsFavoriteToggle } from "../ui/board-favorite-toggle";
 import { BoardsSidebar } from "../ui/board-list-sidebar";
-import { TemplatesGallery, TemplatesModal, useTemplatesModal } from "@/features/boards-templates/index";
+import { TemplatesGallery, TemplatesModal } from "@/features/boards-templates/index";
+import { openTemplatesModal } from "@/shared/model/slices/templatesModalSlice";
 
 function BoardsListPage() {
   const boardsFilters = useBoardsFilters();
   const boardActions = useActionsBoards();
-  const [viewMode, setViewMode] = useState<ViewMode>("list");
+  const {changeViewMode, viewMode} = useViewMode()
+
   const {updateFavorite, delete: deleteActions } = useActionsBoards();
   const {isPending, isFetchingNextPage, cursorRef, boards, hasNextPage } =
     useBoardsList({
       sort: boardsFilters.sort,
       search: useDebounceValue(boardsFilters.search, 700),
     });
-
-  const {open} = useTemplatesModal()
+  const dispatch = useAppDispatch()
+ 
   return (
     <>
       <TemplatesModal/>
@@ -45,7 +46,7 @@ function BoardsListPage() {
             <>
              <Button
               variant={"outline"}
-              onClick={open}
+              onClick={() => dispatch(openTemplatesModal())}
             >
               Добавить шаблон
             </Button>
@@ -77,7 +78,9 @@ function BoardsListPage() {
           actions={
             <ViewModeToggle
               value={viewMode}
-              onChange={(value) => setViewMode(value)}
+              onChange={(value) => {
+                changeViewMode(value);
+              }}
             />
           }
         ></BoardsListLayoutFilters>

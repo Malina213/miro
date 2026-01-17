@@ -1,13 +1,21 @@
 import { ROUTES } from "@/shared/model/routes";
-import { useSession } from "@/shared/model/session";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/shared/ui/kit/button";
+import { useAppDispatch, useAppSelector } from "@/shared/lib/hooks";
+import { logout as logoutAction } from "@/shared/model/slices/sessionSlice";
 
 export function AppHeader() {
-  const { session, logout } = useSession();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const session = useAppSelector(state => state.session.session)
   if (!session) {
     return null;
   }
+  const handleLogout = () => {
+    dispatch(logoutAction());
+    navigate(ROUTES.LOGIN);
+  };
+
   return (
     <header className="bg-background border-b border-border/40 shadow-sm py-3 px-4 mb-6">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -22,7 +30,7 @@ export function AppHeader() {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => logout()}
+              onClick={handleLogout}
               className="hover:bg-destructive/10"
             >
               Выйти

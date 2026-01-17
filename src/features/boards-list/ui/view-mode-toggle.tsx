@@ -6,7 +6,7 @@ export function ViewModeToggle({
   value,
   onChange,
 }: {
-  value: ViewMode;
+  value: ViewMode ;
   onChange: (value: ViewMode) => void;
 }) {
   return (

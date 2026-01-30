@@ -9,7 +9,6 @@ export type BoardsSortOption =
 export type BoardsFilters = {
   search: string;
   sort: BoardsSortOption;
-  showFavorites: boolean | null;
 };
 export const useBoardsFilters = () => {
   const [search, setSearch] = useState("");

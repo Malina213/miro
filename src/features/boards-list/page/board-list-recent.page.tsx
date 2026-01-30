@@ -17,10 +17,10 @@ import { BoardListItem } from "../ui/board-list-item";
 import { useRecentGroups } from "../model/use-recent-groups";
 import { ApiSchemas } from "@/shared/api/schema";
 import { BoardsSidebar } from "../ui/board-list-sidebar";
-import { useViewMode } from "@/shared/lib/hooks";
+import { useViewMode } from "../model/use-view-mode";
 
 function BoardsListRecentPage() {
-  const {changeViewMode, viewMode} = useViewMode()
+  const {changeViewMode, viewMode} = useViewMode();
   const {updateFavorite, delete: deleteActions } = useActionsBoards();
   const {isPending, isFetchingNextPage, cursorRef, boards, hasNextPage} = useBoardsList({sort:'lastOpenedAt'});
   const recentsGroups = useRecentGroups(boards);

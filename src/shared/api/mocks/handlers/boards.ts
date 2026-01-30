@@ -119,20 +119,19 @@ export const boardsHandlers = [
 
     let filteredBoards = [...boards];
 
-    // Фильтрация по поиску
     if (search) {
       filteredBoards = filteredBoards.filter((board) =>
         board.name.toLowerCase().includes(search.toLowerCase()),
       );
     }
 
-    // Фильтрация по избранному
     if (isFavorite !== null) {
       const isFav = isFavorite === "true";
       filteredBoards = filteredBoards.filter(
         (board) => board.isFavorite === isFav,
       );
     }
+    
     if (sort) {
       filteredBoards.sort((a, b) => {
         if (sort === "name") {
@@ -172,8 +171,6 @@ export const boardsHandlers = [
         { status: 404 },
       );
     }
-
-    // Обновляем lastOpenedAt при просмотре доски
     board.lastOpenedAt = new Date().toISOString();
     return HttpResponse.json(board);
   }),

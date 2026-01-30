@@ -11,7 +11,7 @@ import { BoardsFavoriteToggle } from "../ui/board-favorite-toggle";
 import { Button } from "@/shared/ui/kit/button";
 import { BoardListItem } from "../ui/board-list-item";
 import { BoardsSidebar } from "../ui/board-list-sidebar";
-import { useViewMode } from "@/shared/lib/hooks";
+import { useViewMode } from "../model/use-view-mode";
 
 function BoardsListFavoritePage() {
   const {updateFavorite, delete: deleteActions } = useActionsBoards();

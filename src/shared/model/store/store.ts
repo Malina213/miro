@@ -1,14 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import sessionReducer from "../slices/sessionSlice";
-import templatesModalReducer from "../slices/templatesModalSlice";
-
-
 
 
 export const store = configureStore({
   reducer: {
-    session: sessionReducer,
-    templatesModal: templatesModalReducer
+    session: sessionReducer
   },
 });
 

@@ -10,7 +10,7 @@ interface BoardsSidebarProps {
 
 export function BoardsSidebar({ className }: BoardsSidebarProps) {
   return (
-    <div className={cn("w-64 border-r p-4 space-y-4", className)}>
+    <div className={cn("w-50 border-r p-4 space-y-4", className)}>
       <div className="space-y-2">
         <div className="text-sm font-medium text-gray-500 px-2">Навигация</div>
         <Button variant="ghost" className="w-full justify-start" asChild>

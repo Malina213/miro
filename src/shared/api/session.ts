@@ -1,4 +1,4 @@
-import { SignJWT, jwtVerify } from "jose"; // ✅ Добавьте эту строку
+import { SignJWT, jwtVerify } from "jose"; 
 import { HttpResponse } from "msw";
 
 type Session = {

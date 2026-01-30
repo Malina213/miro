@@ -18,14 +18,13 @@ export function BoardsListLayout({
     <div className="container mx-auto p-4 flex flex-col gap-6">
       <div className="flex gap-4">
          {sidebar}
-      <div className="flex-1">
-        {templates && 
-          <div className="mb-4 rounded-md bg-gray-100 p-4">{templates}</div>
-        }
-        {header}
-        {filters}
-        {children}
-      </div>
+          <div className="flex-1">
+            {templates && 
+              <div className="mb-4 rounded-md bg-gray-100 p-4">{templates}</div>}
+            {header}
+            {filters}
+            {children}
+          </div>
       </div>
     </div>
   );
@@ -41,7 +40,7 @@ export function BoardsListLayoutHeader({
   description?: string;
 }) {
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex justify-between items-center mb-2.5">
       <div>
         <h1 className="text-2xl font-bold">{title}</h1>
         {description && <p className="text-gray-500">{description}</p>}
@@ -60,15 +59,15 @@ export function BoardsListLayoutFilters({
   search?: React.ReactNode;
 }) {
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-4 mb-5">
       {search && (
         <div className="flex items-center gap-2">
-          <span className="w-[100px]"> Search by</span> {search}
+         {search}
         </div>
       )}
       {sort && (
         <div className="flex items-center gap-2">
-          <span className="w-[100px]"> Sort by</span> {sort}
+          {sort}
         </div>
       )}
       {actions && <div className="ml-auto">{actions}</div>}

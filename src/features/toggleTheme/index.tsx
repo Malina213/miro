@@ -1,4 +1,4 @@
-import { Button } from "@/shared/ui/kit/button"; // shadcn Button
+import { Button } from "@/shared/ui/kit/button";
 import { toggleTheme } from "@/shared/model/slices/themeSlice";
 import { Sun, Moon } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";

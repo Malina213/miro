@@ -1,4 +1,3 @@
-
 import { useBoardsList } from "../model/use-boards-list";
 import { useActionsBoards } from "../model/use-actions-boards";
 import {
@@ -20,42 +19,39 @@ import { BoardsSidebar } from "../ui/board-list-sidebar";
 import { useViewMode } from "../model/use-view-mode";
 
 function BoardsListRecentPage() {
-  const {changeViewMode, viewMode} = useViewMode();
-  const {updateFavorite, delete: deleteActions } = useActionsBoards();
-  const {isPending, isFetchingNextPage, cursorRef, boards, hasNextPage} = useBoardsList({sort:'lastOpenedAt'});
+  const { changeViewMode, viewMode } = useViewMode();
+  const { updateFavorite, delete: deleteActions } = useActionsBoards();
+  const { isPending, isFetchingNextPage, cursorRef, boards, hasNextPage } =
+    useBoardsList({ sort: "lastOpenedAt" });
   const recentsGroups = useRecentGroups(boards);
-    
-  const renderCard = (board: ApiSchemas["Board"]) => {
-    return (
-      <li key={board.id}>
-        <BoardsListCard
-          board={board}
-          rightActions={
-            <BoardsFavoriteToggle
-              onToggle={() => updateFavorite.handleToggle(board)}
-              isFavorite={updateFavorite.isOptimisticFavorite(board)}
-              className="top-1 right-20"
-            />
-          }
-          menuActions={
-            <Button
-              variant="destructive"
-              className="w-full"
-              disabled={deleteActions.isPending(board.id)}
-              onClick={() => deleteActions.deleteBoard(board.id)}
-            >
-              Удалить
-            </Button>
-          }
-        />  
-      </li> 
-    );
-  }
-  const renderItem = (board: ApiSchemas["Board"]) => {
-    return (
+
+  const renderCard = (board: ApiSchemas["Board"]) => (
+    <li key={board.id}>
+      <BoardsListCard
+        board={board}
+        rightActions={
+          <BoardsFavoriteToggle
+            onToggle={() => updateFavorite.handleToggle(board)}
+            isFavorite={updateFavorite.isOptimisticFavorite(board)}
+            className="top-1 right-20"
+          />
+        }
+        menuActions={
+          <Button
+            variant="destructive"
+            className="w-full"
+            disabled={deleteActions.isPending(board.id)}
+            onClick={() => deleteActions.deleteBoard(board.id)}
+          >
+            Удалить
+          </Button>
+        }
+      />
+    </li>
+  );
+  const renderItem = (board: ApiSchemas["Board"]) => (
     <li key={board.id}>
       <BoardListItem
-        key={board.id}
         board={board}
         isFavorite={updateFavorite.isOptimisticFavorite(board)}
         onToggleFavorite={() => updateFavorite.handleToggle(board)}
@@ -63,25 +59,32 @@ function BoardsListRecentPage() {
         deleteDisabled={deleteActions.isPending(board.id)}
       />
     </li>
-    );
-  }
+  );
 
-  const renderGroup = () => {
-    if(viewMode === 'list'){
-      return (<BoardsListLayoutList children={boards.map(renderCard)}></BoardsListLayoutList>)
-    } 
-    return (<BoardsListLayoutCards children={boards.map(renderItem)}></BoardsListLayoutCards>)
-  }
+  const renderGroupContent = (groupBoards: ApiSchemas["Board"][]) => {
+    if (viewMode === "list") {
+      return (
+        <BoardsListLayoutList>
+          {groupBoards.map(renderCard)}
+        </BoardsListLayoutList>
+      );
+    }
+    return (
+      <BoardsListLayoutCards>
+        {groupBoards.map(renderItem)}
+      </BoardsListLayoutCards>
+    );
+  };
 
   return (
     <BoardsListLayout
-      sidebar={<BoardsSidebar/>}
+      sidebar={<BoardsSidebar />}
       header={
         <BoardsListLayoutHeader
-          title={"Недавние доски"}
+          title="Недавние доски"
           description="Посмотри, что делал на днях"
           actions={
-             <ViewModeToggle
+            <ViewModeToggle
               value={viewMode}
               onChange={(value) => changeViewMode(value)}
             />
@@ -95,16 +98,15 @@ function BoardsListRecentPage() {
         isFetchingNextPage={isFetchingNextPage}
         cursorRef={cursorRef}
         hasNextPage={hasNextPage}
-        mode={viewMode}>
+        mode={viewMode}
+      >
         <BoardsLayoutContentGroups
-            groups={recentsGroups.map((group) => ({
-              title: group.title,
-              items: renderGroup(), 
-            }))}
+          groups={recentsGroups.map((group) => ({
+            title: group.title,
+            items: renderGroupContent(group.items),
+          }))}
         />
       </BoardListContent>
-       
-
     </BoardsListLayout>
   );
 }

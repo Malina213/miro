@@ -5,43 +5,58 @@ type BoardsGroup = {
   items: ApiSchemas["Board"][];
 };
 
-const groupOrder = ["Сегодня", "Вчера", "Прошлый месяц", "Другое"];
 export function useRecentGroups(boards: ApiSchemas["Board"][]): BoardsGroup[] {
+  const getLocalDateStr = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
+  const dayBeforeYesterday = new Date(today);
+  dayBeforeYesterday.setDate(today.getDate() - 2);
 
-  const lastMonth = new Date(today);
-  lastMonth.setMonth(lastMonth.getMonth() - 1);
+  const todayStr = getLocalDateStr(today);
+  const yesterdayStr = getLocalDateStr(yesterday);
+  const dayBeforeYesterdayStr = getLocalDateStr(dayBeforeYesterday);
 
-  const groups = boards.reduce<BoardsGroup[]>((acc, board) => {
-    const lastOpenedAt = new Date(board.lastOpenedAt);
-    lastOpenedAt.setHours(0, 0, 0, 0);
+  const filterBoards = (dateStr: string) =>
+    boards.filter(
+      (board) => getLocalDateStr(new Date(board.lastOpenedAt)) === dateStr,
+    );
 
-    let groupTitle;
-    if (lastOpenedAt.getTime() === today.getTime()) {
-      groupTitle = "Сегодня";
-    } else if (lastOpenedAt.getTime() === yesterday.getTime()) {
-      groupTitle = "Вчера";
-    } else if (lastOpenedAt >= lastMonth) {
-      groupTitle = "Прошлый месяц";
-    } else {
-      groupTitle = "Другое";
-    }
+  const olderBoards = boards.filter(
+    (board) =>
+      getLocalDateStr(new Date(board.lastOpenedAt)) < dayBeforeYesterdayStr,
+  );
 
-    const group = acc.find((g) => g.title === groupTitle);
-    if (group) {
-      group.items.push(board);
-    } else {
-      acc.push({ title: groupTitle, items: [board] });
-    }
+  const todayBoards = filterBoards(todayStr);
+  const yesterdayBoards = filterBoards(yesterdayStr);
+  const dayBeforeYesterdayBoards = filterBoards(dayBeforeYesterdayStr);
 
-    return acc;
-  }, []);
+  const sortBoards = (boards: ApiSchemas["Board"][]) =>
+    boards.sort(
+      (a, b) =>
+        new Date(b.lastOpenedAt).getTime() - new Date(a.lastOpenedAt).getTime(),
+    );
 
-  return groupOrder
-    .map((title) => groups.find((g) => g.title === title))
-    .filter((group): group is BoardsGroup => group !== undefined);
+  const result: BoardsGroup[] = [];
+
+  if (todayBoards.length > 0)
+    result.push({ title: "Сегодня", items: sortBoards(todayBoards) });
+  if (yesterdayBoards.length > 0)
+    result.push({ title: "Вчера", items: sortBoards(yesterdayBoards) });
+  if (dayBeforeYesterdayBoards.length > 0)
+    result.push({
+      title: "Позавчера",
+      items: sortBoards(dayBeforeYesterdayBoards),
+    });
+  if (olderBoards.length > 0)
+    result.push({ title: "Ранее", items: sortBoards(olderBoards) });
+
+  return result;
 }

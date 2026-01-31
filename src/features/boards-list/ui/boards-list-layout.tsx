@@ -17,14 +17,15 @@ export function BoardsListLayout({
   return (
     <div className="container mx-auto p-4 flex flex-col gap-6">
       <div className="flex gap-4">
-         {sidebar}
-          <div className="flex-1">
-            {templates && 
-              <div className="mb-4 rounded-md bg-gray-100 p-4">{templates}</div>}
-            {header}
-            {filters}
-            {children}
-          </div>
+        {sidebar}
+        <div className="flex-1">
+          {templates && (
+            <div className="mb-4 rounded-md bg-gray-100 p-4">{templates}</div>
+          )}
+          {header}
+          {filters}
+          {children}
+        </div>
       </div>
     </div>
   );
@@ -60,16 +61,8 @@ export function BoardsListLayoutFilters({
 }) {
   return (
     <div className="flex items-center gap-4 mb-5">
-      {search && (
-        <div className="flex items-center gap-2">
-         {search}
-        </div>
-      )}
-      {sort && (
-        <div className="flex items-center gap-2">
-          {sort}
-        </div>
-      )}
+      {search && <div className="flex items-center gap-2">{search}</div>}
+      {sort && <div className="flex items-center gap-2">{sort}</div>}
       {actions && <div className="ml-auto">{actions}</div>}
     </div>
   );
@@ -147,6 +140,7 @@ export function BoardsLayoutContentGroups({
     items: React.ReactNode;
   }[];
 }) {
+  console.log(groups.map((group) => console.log(group)));
   return (
     <div className="flex flex-col gap-2">
       {groups.map((group) => (

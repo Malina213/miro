@@ -8,13 +8,12 @@ type Session = {
     iat: number 
 };
 
-const TOKEN_KEY = "token";
-
 type SessionState = {
   token: string | null;
   session: Session | null;
 };
 
+const TOKEN_KEY = "token";
 const initialToken = localStorage.getItem(TOKEN_KEY);
 
 const initialState: SessionState = {

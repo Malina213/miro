@@ -3,11 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/shared/ui/kit/button";
 import { useAppDispatch, useAppSelector } from "@/shared/lib/hooks";
 import { logout as logoutAction } from "@/shared/model/slices/sessionSlice";
+import { ThemeToggle } from "../toggleTheme";
 
 export function AppHeader() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const session = useAppSelector(state => state.session.session)
+  const session = useAppSelector((state) => state.session.session);
   if (!session) {
     return null;
   }
@@ -35,6 +36,7 @@ export function AppHeader() {
             >
               Выйти
             </Button>
+            <ThemeToggle />
           </div>
         ) : (
           <Button asChild variant="default" size="sm">

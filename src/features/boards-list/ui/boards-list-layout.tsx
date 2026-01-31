@@ -140,13 +140,12 @@ export function BoardsLayoutContentGroups({
     items: React.ReactNode;
   }[];
 }) {
-  console.log(groups.map((group) => console.log(group)));
   return (
     <div className="flex flex-col gap-2">
-      {groups.map((group) => (
-        <div key={group.title}>
-          <div className="text-lg font-bold mb-2">{group.title}</div>
-          {group.items}
+      {groups.map(({ title, items }) => (
+        <div key={title}>
+          <div className="text-lg font-bold mb-2">{title}</div>
+          {items}
         </div>
       ))}
     </div>
